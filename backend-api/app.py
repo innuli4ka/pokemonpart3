@@ -5,7 +5,7 @@ import os
 app = Flask(__name__)
 
 # Get MongoDB connection string
-MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017/") #should change after I will dockarize the mongodb and app.py
+MONGO_URI = os.getenv("MONGO_URI", "mongodb://mongo:27017/") 
 # Connect to MongoDB
 client = MongoClient(MONGO_URI)
 db = client['poke_db']

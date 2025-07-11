@@ -8,3 +8,22 @@ services:
     volumes:
       - ./:/workspace
       - ~/.ssh/vockey.pem:/root/.ssh/vockey.pem
+
+  mongo:
+    image: mongo:latest
+    container_name: mongo_db
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+  backend:
+    build: ./backend-api
+    container_name: backend_api
+    ports:
+      - "5000:5000"
+    depends_on:
+      - mongo
+
+volumes:
+  mongo-data:
