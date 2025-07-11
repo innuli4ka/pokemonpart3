@@ -1,10 +1,14 @@
-.PHONY: ansible_shell deploy_backend deploy_frontend
+.PHONY: deploy_all terraform apply_backend apply_frontend
 
-ansible_shell:
-	docker-compose run ansible /bin/sh
+deploy_all: terraform backend frontend
 
-deploy_backend:
-	docker-compose run ansible /bin/sh -c "chmod 600 /root/.ssh/vockey.pem && ansible-playbook -i ansible/inventory.ini ansible/deploy_backend.yml --limit backend_servers"
+terraform:
+	terraform init
+	terraform apply -auto-approve
 
-deploy_frontend:
+backend:
+	ssh -i ~/.ssh/vockey.pem ubuntu@$(terraform output -raw backend_ip) \
+	"cd ~/pokeapi_game && docker-compose up -d --build"
+
+frontend:
 	docker-compose run ansible /bin/sh -c "chmod 600 /root/.ssh/vockey.pem && ansible-playbook -i ansible/inventory.ini ansible/setup_game.yml --limit frontend_servers"
