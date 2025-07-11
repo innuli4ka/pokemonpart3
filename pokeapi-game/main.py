@@ -1,12 +1,15 @@
 import requests
 import random
+import os
+
 
 # Public PokeAPI
 API_BASE_URL = "https://pokeapi.co/api/v2"
 POKEMON_LIST_URL = f"{API_BASE_URL}/pokemon?limit=10000&offset=0"
 
 # Backend API
-BACKEND_API_URL = "http://localhost:5000"
+BACKEND_API_URL = os.getenv("BACKEND_API_URL", "http://localhost:5000")
+
 
 def save_pokemon_to_backend(pokemon):
     response = requests.post(f"{BACKEND_API_URL}/pokemon", json=pokemon)

@@ -1,6 +1,6 @@
 ---
 - name: Configure Pokemon Game Server
-  hosts: backend_servers
+  hosts: frontend_servers
   become: yes
 
   vars:
@@ -11,12 +11,9 @@
       apt:
         update_cache: yes
 
-    - name: Install Python 3, pip and git
+    - name: Install requests via apt
       apt:
-        name:
-          - python3
-          - python3-pip
-          - git
+        name: python3-requests
         state: present
 
     - name: Clone pokeapi-game repo
@@ -25,16 +22,12 @@
         dest: "{{ game_dir }}"
         update: yes
         version: main
-
-    - name: Install Python requests module
-      pip:
-        name: requests
-        executable: pip3
+        force: yes
 
     - name: Add auto-run to bashrc for SSH logins
       lineinfile:
         path: /home/ubuntu/.bashrc
-        line: 'if [ -n "$SSH_CONNECTION" ]; then cd ~/pokeapi-game && python3 ui.py; fi'
+        line: if [ -n "$SSH_CONNECTION" ]; then export BACKEND_API_URL="http://<YOUR-BACKEND-IP>:5000"; cd ~/pokeapi-game/pokeapi-game && python3 ui.py; fi
         insertafter: EOF
 
     - name: Ensure ubuntu owns the game folder
