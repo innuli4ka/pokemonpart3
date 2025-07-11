@@ -1,6 +1,9 @@
 # Pokémon Game Infrastructure 🐍
 
 This project deploys a simple **Pokémon Drawer Game** on AWS EC2 using **Terraform**, **Ansible**, **Docker**, and **Docker Compose**.
+Here is a diagram of this infrastrucure 
+
+<img width="615" height="544" alt="image" src="https://github.com/user-attachments/assets/4eaf4492-b0fa-4a3c-bafc-0fa0054da10b" />
 
 ---
 
