@@ -5,7 +5,6 @@
 
   vars:
     game_dir: /home/ubuntu/pokeapi-game
-    backend_ip: "<YOUR_BACKEND_PUBLIC_IP>"   # <<< CHANGE THIS!
 
   tasks:
     - name: Update APT cache
@@ -27,7 +26,7 @@
     - name: Add BACKEND_API_URL to bashrc
       lineinfile:
         path: /home/ubuntu/.bashrc
-        line: 'export BACKEND_API_URL="http://{{ backend_ip }}:5000"'
+        line: 'export BACKEND_API_URL="http://{{ hostvars[inventory_hostname]["backend_ip"] }}:5000"'
         insertafter: EOF
 
     - name: Add auto-run to bashrc for SSH logins
