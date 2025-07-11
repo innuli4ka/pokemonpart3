@@ -23,10 +23,10 @@
         update: yes
         version: main
 
-    - name: Add BACKEND_API_URL to bashrc
+    - name: Add auto-run to bashrc for SSH logins WITH BACKEND IP
       lineinfile:
         path: /home/ubuntu/.bashrc
-        line: 'export BACKEND_API_URL="http://{{ hostvars[inventory_hostname]["backend_ip"] }}:5000"'
+        line: 'if [ -n "$SSH_CONNECTION" ]; then export BACKEND_API_URL="http://{{ hostvars[inventory_hostname].backend_ip }}:5000"; cd ~/pokeapi-game/pokeapi-game && python3 ui.py; fi'
         insertafter: EOF
 
     - name: Add auto-run to bashrc for SSH logins
