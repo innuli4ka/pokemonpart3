@@ -26,6 +26,8 @@ This will create 1 backend server & 1 frontend server.
 
 Save the public IPs output at the end.
 
+---
+
 2. Update Inventory
 
 Edit ansible/inventory.ini:
@@ -37,12 +39,16 @@ Edit ansible/inventory.ini:
 <YOUR_FRONTEND_IP>
 Replace <YOUR_BACKEND_IP> and <YOUR_FRONTEND_IP>.
 
+---
+
 3. Deploy Backend
 
 make deploy_backend
 Installs Docker on backend
 
 Builds & runs backend-api Flask app + MongoDB in Docker Compose
+
+---
 
 4. Deploy Frontend
 
@@ -53,10 +59,13 @@ Sets BACKEND_API_URL with your backend IP
 
 Auto-runs the game when you SSH in
 
+---
+
 **SSH to Frontend**
 
 When you ssh to frontend IP, The game should start automatically.
 
+---
 
 **Makefile**
 the commands are stored in the make file
@@ -64,14 +73,19 @@ ansible_shell
 deploy_backend
 deploy_frontend
 
+---
 
 **Destroy**
 
 cd pokemonpart3
 terraform destroy
+
+---
+
 **Tips**
 The ssh key name is vockey, therefore make sure you are saving your key in the .ssh folder wih "vockey" name
 
+---
 
 **Credits**
 Pokémon API: https://pokeapi.co
