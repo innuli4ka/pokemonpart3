@@ -57,7 +57,7 @@ def get_pokemon_data(name_or_id):
             return found
 
         # If not found, get from public PokeAPI
-        url = f"{POKEAPI_BASE_URL}/pokemon/{name_or_id}"
+        url = f"{API_BASE_URL}/pokemon/{name_or_id}"
         response = requests.get(url)
 
         if response.status_code != 200:
