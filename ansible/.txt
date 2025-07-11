@@ -1,0 +1,55 @@
+You do:
+
+bash
+Copy
+Edit
+terraform output
+➡️ This will show:
+
+ini
+Copy
+Edit
+instance_public_ips = [
+  "34.12.23.45",
+  "18.212.76.123"
+]
+✅ Copy those IPs → paste into your inventory.ini.
+
+Run each playbook for the right group:
+
+bash
+Copy
+Edit
+ansible-playbook -i ansible/inventory.ini ansible/deploy_backend.yml --limit backend_servers
+
+ansible-playbook -i ansible/inventory.ini ansible/setup_game.yml --limit game_servers
+✅ --limit makes sure only the right EC2 runs that playbook.
+
+deploy_backend.yml:
+
+yaml
+Copy
+Edit
+- name: Setup backend API server
+  hosts: backend_servers
+  become: yes
+  tasks:
+    - name: Deploy backend Docker Compose etc...
+setup_game.yml:
+
+yaml
+Copy
+Edit
+- name: Setup game server
+  hosts: game_servers
+  become: yes
+  tasks:
+    - name: Clone game repo etc...
+
+    ✅ Final Ansible commands
+bash
+Copy
+Edit
+ansible-playbook -i ansible/inventory.ini ansible/deploy_backend.yml --limit backend_servers
+
+ansible-playbook -i ansible/inventory.ini ansible/setup_game.yml --limit game_servers

@@ -1,17 +1,30 @@
 import requests
 import random
-from db import get_pokemon_from_db, save_pokemon_to_db, create_table_if_not_exists
 
+# Public PokeAPI
 API_BASE_URL = "https://pokeapi.co/api/v2"
 POKEMON_LIST_URL = f"{API_BASE_URL}/pokemon?limit=10000&offset=0"
 
-create_table_if_not_exists()
+# Backend API
+BACKEND_API_URL = "http://localhost:5000"
 
+def save_pokemon_to_backend(pokemon):
+    response = requests.post(f"{BACKEND_API_URL}/pokemon", json=pokemon)
+    if response.status_code == 201:
+        print(f"Pokémon {pokemon['name']} saved to backend.")
+    else:
+        print(f"Error saving Pokémon: {response.text}")
+
+def get_pokemon_from_backend(name):
+    response = requests.get(f"{BACKEND_API_URL}/pokemon/{name}")
+    if response.status_code == 200:
+        return response.json()
+    else:
+        return None
 
 def get_pokemon_data(name_or_id):
-    # Check if name_or_id is numeric (ID case)
     if str(name_or_id).isdigit():
-        # Always fetch from API by ID
+        # Always fetch by ID from public PokeAPI
         url = f"{API_BASE_URL}/pokemon/{name_or_id}"
         response = requests.get(url)
 
@@ -28,19 +41,20 @@ def get_pokemon_data(name_or_id):
             "types": [t["type"]["name"] for t in data["types"]]
         }
 
-        existing = get_pokemon_from_db(pokemon_info['name'])
+        existing = get_pokemon_from_backend(pokemon_info['name'])
         if not existing:
-            save_pokemon_to_db(pokemon_info)
+            save_pokemon_to_backend(pokemon_info)
 
         return pokemon_info
+
     else:
-        # Search by name → check Dynamo first
-        found = get_pokemon_from_db(name_or_id)
+        # Look up by name in backend first
+        found = get_pokemon_from_backend(name_or_id)
         if found:
             return found
 
-        # Not in DB → fetch from API
-        url = f"{API_BASE_URL}/pokemon/{name_or_id}"
+        # If not found, get from public PokeAPI
+        url = f"{POKEAPI_BASE_URL}/pokemon/{name_or_id}"
         response = requests.get(url)
 
         if response.status_code != 200:
@@ -56,7 +70,7 @@ def get_pokemon_data(name_or_id):
             "types": [t["type"]["name"] for t in data["types"]]
         }
 
-        save_pokemon_to_db(pokemon_info)
+        save_pokemon_to_backend(pokemon_info)
         return pokemon_info
 
 def print_pokemon_info(pokemon):

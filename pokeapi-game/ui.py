@@ -1,12 +1,16 @@
-from main import get_pokemon_data, get_random_pokemon_data, print_pokemon_info
+from main import get_pokemon_data, get_random_pokemon_data
 from picachu import print_welcome_art
 
-
+def print_pokemon_info(pokemon):
+    print(f"ID: {pokemon['id']}")
+    print(f"Name: {pokemon['name']}")
+    print(f"Height: {pokemon['height']}")
+    print(f"Weight: {pokemon['weight']}")
+    print(f"Types: {', '.join(pokemon['types'])}")
 
 def menu():
     while True:
-        welcome_message = print_welcome_art()
-        welcome_message
+        print_welcome_art()
         print("\nWelcome to the Pokémon Drawer!")
         print("1. Draw a Pokémon")
         print("2. Exit")
@@ -36,7 +40,7 @@ def menu():
                 if pokemon:
                     print("\nHere are the details of the drawn Pokémon:")
                     print_pokemon_info(pokemon)
-                    print("\nPokemon drawn successfully.")
+                    print("\nPokémon drawn successfully.")
                     continue_choice = input("\nWould you like to draw another one? (y/n): ").strip().lower()
                     if continue_choice != "y":
                         print("Goodbye!")

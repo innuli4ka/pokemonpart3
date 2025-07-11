@@ -1,0 +1,45 @@
+---
+- name: Deploy Flask API and MongoDB with Docker
+  hosts: backend_servers
+  become: yes
+
+  vars:
+    project_dir: /home/ubuntu/pokeapi_game  # Where your app lives on the server
+
+  tasks:
+    - name: Install Docker
+      apt:
+        name: docker.io
+        state: present
+        update_cache: yes
+
+    - name: Install Docker Compose
+      apt:
+        name: docker-compose
+        state: present
+
+    - name: Create project directory
+      file:
+        path: "{{ project_dir }}"
+        state: directory
+
+    - name: Copy backend files
+      copy:
+        src: ../backend-api/
+        dest: "{{ project_dir }}/backend-api/"
+        owner: ubuntu
+        group: ubuntu
+        mode: 0755
+
+    - name: Copy docker-compose.yml
+      copy:
+        src: ../docker-compose.yml
+        dest: "{{ project_dir }}/docker-compose.yml"
+        owner: ubuntu
+        group: ubuntu
+        mode: 0644
+
+    - name: Run docker-compose up
+      shell: docker-compose up -d
+      args:
+        chdir: "{{ project_dir }}"
