@@ -3,7 +3,7 @@
 This project deploys a simple **Pokémon Drawer Game** on AWS EC2 using **Terraform**, **Ansible**, **Docker**, and **Docker Compose**.
 Here is a diagram of this infrastrucure 
 
-<img width="591" height="558" alt="image" src="https://github.com/user-attachments/assets/e7d749f8-eea4-4b8e-a070-85d9b91e69d7" />
+<img width="599" height="528" alt="image" src="https://github.com/user-attachments/assets/b92247e8-55a2-4a0c-ac6c-ae529ce6b753" />
 
 ---
 
