@@ -14,24 +14,16 @@ provider "aws" {
   token      = var.aws_session_token
 }
 
-
-variable "region" {
-  default = "us-west-2"
-}
-
+# Declare variables
 variable "aws_access_key" {}
 variable "aws_secret_key" {}
-variable "aws_session_token" {} # If you actually need it - in case it is a lab and not a reqular account
+variable "aws_session_token" {}
+variable "region" {}
+variable "ami" {}
+variable "instance_type" {}
+variable "key_name" {}
 
-variable "instance_type" {
-  default = "t2.micro"
-}
-
-variable "key_name" {
-  description = "Your EC2 key pair name"
-}
-
-#  Security Group
+# Security Group
 resource "aws_security_group" "pokemon_sg" {
   name_prefix = "pokemon-sg-"
   description = "Allow SSH, Flask API, Mongo (optional)"
@@ -68,10 +60,10 @@ resource "aws_security_group" "pokemon_sg" {
   }
 }
 
-#  Two EC2s
+# EC2 Instances
 resource "aws_instance" "pokemon_game" {
   count                  = 2
-  ami                    = "ami-05f991c49d264708f"
+  ami                    = var.ami
   instance_type          = var.instance_type
   key_name               = var.key_name
   vpc_security_group_ids = [aws_security_group.pokemon_sg.id]
@@ -81,7 +73,7 @@ resource "aws_instance" "pokemon_game" {
   }
 }
 
-#  Output IPs
+# Output IPs
 output "instance_public_ips" {
   value = [for instance in aws_instance.pokemon_game : instance.public_ip]
 }
